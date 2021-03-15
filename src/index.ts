@@ -1,35 +1,9 @@
-type JSONType = string | number | boolean | null | JSONType[] | { [key: string]: JSONType }
+type ParameterByIndex<F extends (...args: never[]) => unknown, Index extends number> = F extends (
+    ...args: infer P
+) => unknown
+    ? P[Index]
+    : never
 
-const a: JSONType = [
-    1,
-    2,
-    {
-        x: 35,
-        y: 97,
-        r: ['fsadfds']
-    }
-]
+const fn = (a: number, b: string, c: string): unknown => 1
 
-// exit condition
-type PrototypedObject<T> = T & {
-    prototype: PrototypedObject<T> | null
-}
-
-const b: PrototypedObject<{ x: number }> = {
-    x: 1,
-    prototype: {
-        x: 9,
-        prototype: null
-    }
-}
-
-// const b: PrototypedObject<{ x: number }> = {
-//     x: 1,
-//     prototype: {
-//         prototype: {
-//             prototype: {
-//
-//             }
-//         }
-//     }
-// }
+const a: ParameterByIndex<typeof fn, 1> = 'hello'
